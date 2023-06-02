@@ -3,7 +3,7 @@ import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import MainTab from './MainTab';
 import WriteScreen from './WriteScreen';
 
-type RootStackScreenParamList = {
+export type RootStackScreenParamList = {
   Main: undefined;
   Write: undefined;
 };

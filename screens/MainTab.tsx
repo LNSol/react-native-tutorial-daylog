@@ -5,7 +5,7 @@ import FeedScreen from './FeedScreen';
 import CalendarScreen from './CalendarScreen';
 import SearchScreen from './SearchScreen';
 
-type MainTabScreenParamList = {
+export type MainTabScreenParamList = {
   Feed: undefined;
   Calendar: undefined;
   Search: undefined;

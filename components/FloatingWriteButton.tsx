@@ -1,8 +1,17 @@
+import {useNavigation} from '@react-navigation/native';
+import {NativeStackNavigationProp} from '@react-navigation/native-stack';
 import React from 'react';
 import {Platform, Pressable, StyleSheet, View} from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
+import {RootStackScreenParamList} from '../screens/RootStack';
 
 const FloatingWriteButton = () => {
+  const navigation =
+    useNavigation<NativeStackNavigationProp<RootStackScreenParamList>>();
+
+  const goToWriteScreen = () => {
+    navigation.navigate('Write');
+  };
   return (
     <View style={styles.container}>
       <Pressable
@@ -13,7 +22,8 @@ const FloatingWriteButton = () => {
           // },
           Platform.select({ios: {opacity: pressed ? 0.6 : 1}}),
         ]}
-        android_ripple={{color: 'rgba(255, 255, 255, 0.6)'}}>
+        android_ripple={{color: 'rgba(255, 255, 255, 0.6)'}}
+        onPress={goToWriteScreen}>
         <Icon name="add" size={32} style={styles.icon} />
       </Pressable>
     </View>
