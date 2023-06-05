@@ -17,7 +17,7 @@ const TransparentCircleButton = ({
 }: ICircleButtonProps) => {
   return (
     <View
-      style={(styles.iconButtonWrapper, hasMarginRight && styles.marginRight)}>
+      style={[styles.iconButtonWrapper, hasMarginRight && styles.marginRight]}>
       <Pressable
         style={({pressed}) => [
           styles.iconButton,
