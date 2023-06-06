@@ -1,13 +1,18 @@
 import React from 'react';
 import {StyleSheet} from 'react-native';
 import {SafeAreaView} from 'react-native-safe-area-context';
+import ScreenWrapper from './ScreenWrapper';
 import WriteHeader from '../components/WriteHeader';
+import WriteEditor from '../components/WriteEditor';
 
 const WriteScreen = () => {
   return (
-    <SafeAreaView style={styles.block}>
-      <WriteHeader />
-    </SafeAreaView>
+    <ScreenWrapper>
+      <SafeAreaView style={styles.block}>
+        <WriteHeader />
+        <WriteEditor />
+      </SafeAreaView>
+    </ScreenWrapper>
   );
 };
 
