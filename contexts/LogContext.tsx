@@ -10,7 +10,7 @@ interface ILog {
   id?: string;
   title: string;
   body: string;
-  date: Date;
+  date: string;
 }
 interface ILogContext {
   logs: ILog[];

@@ -1,13 +1,50 @@
 import React, {useState} from 'react';
-import {StyleSheet, KeyboardAvoidingView, Platform} from 'react-native';
+import {StyleSheet, KeyboardAvoidingView, Platform, Alert} from 'react-native';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import ScreenWrapper from './ScreenWrapper';
+import {useLog} from '../contexts/LogContext';
 import WriteHeader from '../components/WriteHeader';
 import WriteEditor from '../components/WriteEditor';
+import {NativeStackScreenProps} from '@react-navigation/native-stack';
+import {RootStackScreenParamList} from './RootStack';
 
-const WriteScreen = () => {
+type WriteScreenProps = NativeStackScreenProps<
+  RootStackScreenParamList,
+  'Write'
+>;
+
+const WriteScreen = ({navigation}: WriteScreenProps) => {
+  const {addLog} = useLog();
   const [title, setTitle] = useState('');
   const [body, setBody] = useState('');
+
+  const save = () => {
+    addLog({title, body, date: new Date().toString()});
+    navigation.pop();
+  };
+
+  const goBack = () => {
+    if (title === '' && body === '') {
+      navigation.pop();
+    } else {
+      Alert.alert('', '내용을 저장하고 화면에서 나가시겠습니까?', [
+        {
+          text: '아니오',
+          onPress: () => {
+            navigation.pop();
+          },
+          style: 'destructive',
+        },
+        {
+          text: '저장',
+          onPress: () => {
+            save();
+          },
+          style: 'default',
+        },
+      ]);
+    }
+  };
 
   return (
     <ScreenWrapper>
@@ -15,7 +52,7 @@ const WriteScreen = () => {
         style={styles.avoidingView}
         behavior={Platform.select({ios: 'padding'})}>
         <SafeAreaView style={styles.block}>
-          <WriteHeader />
+          <WriteHeader save={save} goBack={goBack} />
           <WriteEditor
             title={title}
             body={body}
@@ -32,8 +69,6 @@ const styles = StyleSheet.create({
   block: {
     flex: 1,
     backgroundColor: '#fff',
-    borderWidth: 1,
-    borderColor: 'red',
   },
   avoidingView: {
     flex: 1,

@@ -1,20 +1,13 @@
 import React from 'react';
-import {useNavigation} from '@react-navigation/native';
-import {NativeStackNavigationProp} from '@react-navigation/native-stack';
-import {RootStackScreenParamList} from '../screens/RootStack';
 import TransparentCircleButton from './TransparentCircleButton';
 import {StyleSheet, View} from 'react-native';
 
-type WriteHeaderNavigation =
-  NativeStackNavigationProp<RootStackScreenParamList>;
+interface IWriteHeaderProps {
+  save: () => void;
+  goBack: () => void;
+}
 
-const WriteHeader = () => {
-  const navigation = useNavigation<WriteHeaderNavigation>();
-
-  const goBack = () => {
-    navigation.pop();
-  };
-
+const WriteHeader = ({save, goBack}: IWriteHeaderProps) => {
   return (
     <View style={styles.block}>
       <TransparentCircleButton
@@ -28,7 +21,7 @@ const WriteHeader = () => {
           color="#ef5350"
           hasMarginRight
         />
-        <TransparentCircleButton name="check" color="#009688" />
+        <TransparentCircleButton name="check" color="#009688" onPress={save} />
       </View>
     </View>
   );

@@ -1,18 +1,17 @@
-import React from 'react';
+import React, {useCallback} from 'react';
 import {StyleSheet, View} from 'react-native';
+import {useLog} from '../contexts/LogContext';
 import FloatingWriteButton from '../components/FloatingWriteButton';
-
-// type ComposedRootMainNavigation = CompositeNavigationProp<
-//   BottomTabNavigationProp<MainTabScreenParamList, 'Feed'>,
-//   NativeStackNavigationProp<RootStackScreenParamList>
-// >;
+import {useFocusEffect} from '@react-navigation/native';
 
 const FeedScreen = () => {
-  // const navigation = useNavigation<ComposedRootMainNavigation>();
+  const {logs} = useLog();
 
-  // const goToWriteScreen = () => {
-  //   navigation.navigate('Write');
-  // };
+  useFocusEffect(
+    useCallback(() => {
+      console.log(JSON.stringify(logs, null, 2));
+    }, [logs]),
+  );
 
   return (
     <View style={styles.block}>

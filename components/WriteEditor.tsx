@@ -58,8 +58,6 @@ const styles = StyleSheet.create({
   body: {
     color: '#263238',
     fontSize: 16,
-    borderWidth: 1,
-    borderColor: 'blue',
     marginBottom: Platform.select({android: 30}),
   },
 });
