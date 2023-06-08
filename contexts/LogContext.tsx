@@ -18,7 +18,7 @@ const DefaultLogs = {
   id: 'test1',
   title: '안녕하세요',
   body: '여기는 본문입니다. 하하',
-  date: 'Thu Jun 08 2023 13:43:27 GMT+0900',
+  date: 'Thu Jun 02 2023 13:43:27 GMT+0900',
 };
 interface ILogContext {
   logs: ISavedLog[];

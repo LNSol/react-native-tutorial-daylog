@@ -1,4 +1,6 @@
 import {Platform, Pressable, StyleSheet, Text} from 'react-native';
+import {format, formatDistanceToNow} from 'date-fns';
+import {ko} from 'date-fns/locale';
 import {ISavedLog} from '../contexts/LogContext';
 
 const truncate = (text: string) => {
@@ -8,8 +10,26 @@ const truncate = (text: string) => {
     : replaced.slice(0, 100).concat('...');
 };
 
+const formatDate = (date: string) => {
+  const createdDate = new Date(date);
+  const now = Date.now();
+  const diff = (now - createdDate.getTime()) / 1000;
+
+  if (diff < 60) {
+    return '방금 전';
+  } else if (diff < 60 * 60 * 24 * 3) {
+    return formatDistanceToNow(createdDate, {addSuffix: true, locale: ko});
+  } else {
+    return format(createdDate, 'PPP EEE p', {locale: ko});
+  }
+};
+
 const FeedListItem = ({log}: {log: ISavedLog}) => {
   const {title, body, date} = log;
+
+  console.log(formatDistanceToNow(new Date(), {addSuffix: true, locale: ko}));
+  console.log(new Date().getTime());
+  console.log(format(new Date(), 'PPP EEE p', {locale: ko}));
 
   return (
     <Pressable
@@ -18,7 +38,7 @@ const FeedListItem = ({log}: {log: ISavedLog}) => {
         Platform.OS === 'ios' && pressed && {backgroundColor: '#f9f9f9'},
       ]}
       android_ripple={{color: '#f5f5f5'}}>
-      <Text style={styles.date}>{date}</Text>
+      <Text style={styles.date}>{formatDate(date)}</Text>
       <Text style={styles.title}>{title}</Text>
       <Text style={styles.body}>{truncate(body)}</Text>
     </Pressable>
