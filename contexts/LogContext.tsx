@@ -6,21 +6,23 @@ import React, {
 } from 'react';
 import {v4 as uuidv4} from 'uuid';
 
-export interface ILog {
-  id?: string;
+export interface IUnSavedLog {
   title: string;
   body: string;
   date: string;
 }
-const DefaultLog = {
-  id: 'test',
+export interface ISavedLog extends IUnSavedLog {
+  id: string;
+}
+const DefaultLogs = {
+  id: 'test1',
   title: '안녕하세요',
   body: '여기는 본문입니다. 하하',
   date: 'Thu Jun 08 2023 13:43:27 GMT+0900',
 };
 interface ILogContext {
-  logs: ILog[];
-  addLog: (log: ILog) => void;
+  logs: ISavedLog[];
+  addLog: (log: IUnSavedLog) => void;
 }
 const DefaultLogContext = {
   logs: [],
@@ -30,9 +32,9 @@ const DefaultLogContext = {
 const LogContext = createContext<ILogContext>(DefaultLogContext);
 
 const LogProvider = ({children}: PropsWithChildren) => {
-  const [logs, setLogs] = useState<ILog[]>([DefaultLog]);
+  const [logs, setLogs] = useState<ISavedLog[]>([DefaultLogs]);
 
-  const addLog = ({title, body, date}: ILog) => {
+  const addLog = ({title, body, date}: IUnSavedLog) => {
     const newLog = {
       id: uuidv4(),
       title,

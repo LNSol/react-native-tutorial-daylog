@@ -3,7 +3,7 @@ import {StyleSheet, View} from 'react-native';
 import {useLog} from '../contexts/LogContext';
 import FloatingWriteButton from '../components/FloatingWriteButton';
 import {useFocusEffect} from '@react-navigation/native';
-import FeedListItem from '../components/FeedListItem';
+import FeedList from '../components/FeedList';
 
 const FeedScreen = () => {
   const {logs} = useLog();
@@ -17,9 +17,10 @@ const FeedScreen = () => {
 
   return (
     <View style={styles.block}>
-      {logs?.map(log => (
+      {/* {logs?.map(log => (
         <FeedListItem key={log.id} log={log} />
-      ))}
+      ))} */}
+      <FeedList logs={logs} />
       <FloatingWriteButton />
     </View>
   );

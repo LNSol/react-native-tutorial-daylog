@@ -1,5 +1,5 @@
 import {Platform, Pressable, StyleSheet, Text} from 'react-native';
-import {ILog} from '../contexts/LogContext';
+import {ISavedLog} from '../contexts/LogContext';
 
 const truncate = (text: string) => {
   const replaced = text.replace(/\n/g, '');
@@ -8,7 +8,7 @@ const truncate = (text: string) => {
     : replaced.slice(0, 100).concat('...');
 };
 
-const FeedListItem = ({log}: {log: ILog}) => {
+const FeedListItem = ({log}: {log: ISavedLog}) => {
   const {title, body, date} = log;
 
   return (
