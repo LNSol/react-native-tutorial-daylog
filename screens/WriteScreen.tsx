@@ -29,14 +29,14 @@ const WriteScreen = ({navigation}: WriteScreenProps) => {
     } else {
       Alert.alert('', '내용을 저장하고 화면에서 나가시겠습니까?', [
         {
-          text: '아니오',
+          text: '저장하지 않고 나가기',
           onPress: () => {
             navigation.pop();
           },
           style: 'destructive',
         },
         {
-          text: '저장',
+          text: '저장 후 나가기',
           onPress: () => {
             save();
           },
