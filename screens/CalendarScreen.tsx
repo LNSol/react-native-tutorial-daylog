@@ -1,15 +1,18 @@
-import React, {useRef} from 'react';
-import {
-  StyleSheet,
-  View,
-  Animated,
-  Button,
-  Easing,
-  Dimensions,
-} from 'react-native';
+import React, {useEffect, useRef, useState} from 'react';
+import {StyleSheet, View, Animated, Button, Dimensions} from 'react-native';
 
 const SlideLeftAndRight = () => {
   const animation = useRef(new Animated.Value(0)).current;
+  const [enabled, setEnabled] = useState(false);
+
+  useEffect(() => {
+    Animated.timing(animation, {
+      toValue: enabled ? Dimensions.get('window').width - 100 : 0,
+      useNativeDriver: false,
+      duration: 900,
+    }).start();
+  }, [enabled, animation]);
+
   return (
     <View>
       <Animated.View
@@ -20,31 +23,7 @@ const SlideLeftAndRight = () => {
           },
         ]}
       />
-      <Button
-        title="Left"
-        onPress={() => {
-          Animated.timing(animation, {
-            toValue: 0,
-            useNativeDriver: false,
-            delay: 0,
-            duration: 500,
-            isInteraction: true,
-          }).start();
-        }}
-      />
-      <Button
-        title="Right"
-        onPress={() => {
-          Animated.timing(animation, {
-            toValue: Dimensions.get('window').width - 100,
-            useNativeDriver: false,
-            delay: 10,
-            duration: 1000,
-            isInteraction: true, // 사용자 인터랙션에 의해 시작한 애니메이션인지
-            easing: Easing.inOut(Easing.ease),
-          }).start();
-        }}
-      />
+      <Button title="Toggle" onPress={() => setEnabled(!enabled)} />
     </View>
   );
 };
