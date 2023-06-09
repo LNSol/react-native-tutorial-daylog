@@ -14,12 +14,12 @@ export interface IUnSavedLog {
 export interface ISavedLog extends IUnSavedLog {
   id: string;
 }
-const DefaultLogs = {
-  id: 'test1',
-  title: '안녕하세요',
-  body: '여기는 본문입니다. 하하',
-  date: 'Thu Jun 02 2023 13:43:27 GMT+0900',
-};
+const DefaultLogs = Array.from({length: 10}, (_, idx) => ({
+  id: uuidv4(),
+  title: `Log ${idx + 1}`,
+  body: `Log ${idx + 1}의 본문 내용`,
+  date: new Date().toString(),
+}));
 interface ILogContext {
   logs: ISavedLog[];
   addLog: (log: IUnSavedLog) => void;
@@ -32,7 +32,7 @@ const DefaultLogContext = {
 const LogContext = createContext<ILogContext>(DefaultLogContext);
 
 const LogProvider = ({children}: PropsWithChildren) => {
-  const [logs, setLogs] = useState<ISavedLog[]>([DefaultLogs]);
+  const [logs, setLogs] = useState<ISavedLog[]>(DefaultLogs);
 
   const addLog = ({title, body, date}: IUnSavedLog) => {
     const newLog = {

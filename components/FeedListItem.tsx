@@ -27,10 +27,6 @@ const formatDate = (date: string) => {
 const FeedListItem = ({log}: {log: ISavedLog}) => {
   const {title, body, date} = log;
 
-  console.log(formatDistanceToNow(new Date(), {addSuffix: true, locale: ko}));
-  console.log(new Date().getTime());
-  console.log(format(new Date(), 'PPP EEE p', {locale: ko}));
-
   return (
     <Pressable
       style={({pressed}) => [
