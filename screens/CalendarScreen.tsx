@@ -7,7 +7,7 @@ const SlideLeftAndRight = () => {
 
   useEffect(() => {
     Animated.timing(animation, {
-      toValue: enabled ? Dimensions.get('window').width - 100 : 0,
+      toValue: enabled ? 1 : 0,
       useNativeDriver: false,
       duration: 900,
     }).start();
@@ -19,7 +19,18 @@ const SlideLeftAndRight = () => {
         style={[
           styles.rectangle,
           {
-            transform: [{translateX: animation}],
+            transform: [
+              {
+                translateX: animation.interpolate({
+                  inputRange: [0, 1],
+                  outputRange: [0, Dimensions.get('window').width - 100],
+                }),
+              },
+            ],
+            opacity: animation.interpolate({
+              inputRange: [0, 1],
+              outputRange: [1, 0],
+            }),
           },
         ]}
       />
