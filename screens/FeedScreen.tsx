@@ -1,4 +1,4 @@
-import React, {useCallback} from 'react';
+import React, {useCallback, useState} from 'react';
 import {StyleSheet, View} from 'react-native';
 import {useLog} from '../contexts/LogContext';
 import FloatingWriteButton from '../components/FloatingWriteButton';
@@ -7,6 +7,11 @@ import FeedList from '../components/FeedList';
 
 const FeedScreen = () => {
   const {logs} = useLog();
+  const [hidden, setHidden] = useState(false);
+
+  const onScrolledToBottom = (isBottom: boolean) => {
+    if (hidden !== isBottom) setHidden(isBottom);
+  };
 
   useFocusEffect(
     useCallback(() => {
@@ -17,11 +22,8 @@ const FeedScreen = () => {
 
   return (
     <View style={styles.block}>
-      {/* {logs?.map(log => (
-        <FeedListItem key={log.id} log={log} />
-      ))} */}
-      <FeedList logs={logs} />
-      <FloatingWriteButton />
+      <FeedList logs={logs} onScrolledToBottom={onScrolledToBottom} />
+      <FloatingWriteButton hidden={hidden} />
     </View>
   );
 };

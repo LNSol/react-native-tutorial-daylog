@@ -42,6 +42,7 @@ module.exports = {
         'no-shadow': 'off',
         'no-undef': 'off',
         'jsx-quotes': 'off',
+        curly: 'off',
       },
     },
   ],

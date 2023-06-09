@@ -1,32 +1,55 @@
 import {useNavigation} from '@react-navigation/native';
 import {NativeStackNavigationProp} from '@react-navigation/native-stack';
-import React from 'react';
-import {Platform, Pressable, StyleSheet, View} from 'react-native';
+import React, {useEffect, useRef} from 'react';
+import {Animated, Platform, Pressable, StyleSheet} from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import {RootStackScreenParamList} from '../screens/RootStack';
 
-const FloatingWriteButton = () => {
+const FloatingWriteButton = ({hidden}: {hidden: boolean}) => {
   const navigation =
     useNavigation<NativeStackNavigationProp<RootStackScreenParamList>>();
+  const animation = useRef(new Animated.Value(0)).current;
 
   const goToWriteScreen = () => {
     navigation.navigate('Write');
   };
+
+  useEffect(() => {
+    Animated.timing(animation, {
+      toValue: hidden ? 1 : 0,
+      useNativeDriver: true,
+    }).start();
+  }, [hidden, animation]);
+
   return (
-    <View style={styles.container}>
+    <Animated.View
+      style={[
+        styles.container,
+        {
+          opacity: animation.interpolate({
+            inputRange: [0, 1],
+            outputRange: [1, 0],
+          }),
+          transform: [
+            {
+              translateY: animation.interpolate({
+                inputRange: [0, 1],
+                outputRange: [0, 100],
+              }),
+            },
+          ],
+        },
+      ]}>
       <Pressable
         style={({pressed}) => [
           styles.button,
-          // Platform.OS === 'ios' && {
-          //   opacity: pressed ? 0.6 : 1,
-          // },
           Platform.select({ios: {opacity: pressed ? 0.6 : 1}}),
         ]}
         android_ripple={{color: 'rgba(255, 255, 255, 0.6)'}}
         onPress={goToWriteScreen}>
         <Icon name="add" size={32} style={styles.icon} />
       </Pressable>
-    </View>
+    </Animated.View>
   );
 };
 

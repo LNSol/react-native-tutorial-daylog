@@ -8,9 +8,14 @@ import {
 import {ISavedLog} from '../contexts/LogContext';
 import FeedListItem from './FeedListItem';
 
+interface IFeedListProps {
+  logs: ISavedLog[];
+  onScrolledToBottom: (isBottom: boolean) => void;
+}
+
 const ItemSeparator = () => <View style={styles.separator} />;
 
-const FeedList = ({logs}: {logs: ISavedLog[]}) => {
+const FeedList = ({logs, onScrolledToBottom}: IFeedListProps) => {
   const onScroll = (e: NativeSyntheticEvent<NativeScrollEvent>) => {
     const {contentSize, layoutMeasurement, contentOffset} = e.nativeEvent;
     // console.log('contentSize > ', contentSize);
@@ -20,11 +25,7 @@ const FeedList = ({logs}: {logs: ISavedLog[]}) => {
     const distanceFromBottom =
       contentSize.height - layoutMeasurement.height - contentOffset.y;
 
-    if (distanceFromBottom < 72) {
-      console.log('바닥과 가까움!');
-    } else {
-      console.log('바닥과 멀어짐!');
-    }
+    onScrolledToBottom(distanceFromBottom < 80);
   };
 
   return (
