@@ -17,13 +17,16 @@ const ItemSeparator = () => <View style={styles.separator} />;
 
 const FeedList = ({logs, onScrolledToBottom}: IFeedListProps) => {
   const onScroll = (e: NativeSyntheticEvent<NativeScrollEvent>) => {
-    const {contentSize, layoutMeasurement, contentOffset} = e.nativeEvent;
+    const {
+      contentSize: {height: cHeight},
+      layoutMeasurement: {height: lHeight},
+      contentOffset: {y: offset},
+    } = e.nativeEvent;
     // console.log('contentSize > ', contentSize);
     // console.log('layoutMeasurement > ', layoutMeasurement);
     // console.log('contentOffset > ', contentOffset);
 
-    const distanceFromBottom =
-      contentSize.height - layoutMeasurement.height - contentOffset.y;
+    const distanceFromBottom = cHeight - lHeight - offset;
 
     onScrolledToBottom(distanceFromBottom < 80);
   };
