@@ -4,6 +4,7 @@ import {FeedIcon, CalendarIcon, SearchIcon} from '../icons/icons';
 import FeedScreen from './FeedScreen';
 import CalendarScreen from './CalendarScreen';
 import SearchScreen from './SearchScreen';
+import SearchHeader from '../components/SearchHeader';
 
 export type MainTabScreenParamList = {
   Feed: undefined;
@@ -42,6 +43,7 @@ const MainTab = () => (
       options={{
         tabBarIcon: SearchIcon,
         title: '검색',
+        headerTitle: SearchHeader,
       }}
     />
   </Tab.Navigator>
