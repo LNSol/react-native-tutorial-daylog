@@ -15,9 +15,15 @@ const FloatingWriteButton = ({hidden}: {hidden: boolean}) => {
   };
 
   useEffect(() => {
-    Animated.timing(animation, {
+    // Animated.timing(animation, {
+    //   toValue: hidden ? 1 : 0,
+    //   useNativeDriver: true,
+    // }).start();
+    Animated.spring(animation, {
       toValue: hidden ? 1 : 0,
       useNativeDriver: true,
+      tension: 45,
+      friction: 4,
     }).start();
   }, [hidden, animation]);
 

@@ -10,7 +10,7 @@ import FeedListItem from './FeedListItem';
 
 interface IFeedListProps {
   logs: ISavedLog[];
-  onScrolledToBottom: (isBottom: boolean) => void;
+  onScrolledToBottom?: (isBottom: boolean) => void;
 }
 
 const ItemSeparator = () => <View style={styles.separator} />;
@@ -28,7 +28,8 @@ const FeedList = ({logs, onScrolledToBottom}: IFeedListProps) => {
 
     const distanceFromBottom = cHeight - lHeight - offset;
 
-    onScrolledToBottom(distanceFromBottom < 80);
+    onScrolledToBottom &&
+      onScrolledToBottom(cHeight > lHeight && distanceFromBottom < 80);
   };
 
   return (
