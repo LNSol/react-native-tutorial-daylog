@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {StyleSheet, KeyboardAvoidingView, Platform, Alert} from 'react-native';
+import {StyleSheet, Alert} from 'react-native';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import ScreenWrapper from './ScreenWrapper';
 import {useLog} from '../contexts/LogContext';
@@ -71,24 +71,20 @@ const WriteScreen = ({route, navigation}: WriteScreenProps) => {
 
   return (
     <ScreenWrapper>
-      <KeyboardAvoidingView
-        style={styles.avoidingView}
-        behavior={Platform.select({ios: 'padding'})}>
-        <SafeAreaView style={styles.block}>
-          <WriteHeader
-            isEditing={'id' in log}
-            save={save}
-            goBack={goBack}
-            remove={askRemove}
-          />
-          <WriteEditor
-            title={title}
-            body={body}
-            changeTitle={setTitle}
-            changeBody={setBody}
-          />
-        </SafeAreaView>
-      </KeyboardAvoidingView>
+      <SafeAreaView style={styles.block}>
+        <WriteHeader
+          isEditing={'id' in log}
+          save={save}
+          goBack={goBack}
+          remove={askRemove}
+        />
+        <WriteEditor
+          title={title}
+          body={body}
+          changeTitle={setTitle}
+          changeBody={setBody}
+        />
+      </SafeAreaView>
     </ScreenWrapper>
   );
 };
@@ -97,9 +93,6 @@ const styles = StyleSheet.create({
   block: {
     flex: 1,
     backgroundColor: '#fff',
-  },
-  avoidingView: {
-    flex: 1,
   },
 });
 

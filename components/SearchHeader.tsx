@@ -6,8 +6,10 @@ import {
   useWindowDimensions,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
+import {useSearch} from '../contexts/SearchContext';
 
 const SearchHeader = () => {
+  const {keyword, setKeyword} = useSearch();
   const {width} = useWindowDimensions();
 
   return (
@@ -16,10 +18,13 @@ const SearchHeader = () => {
         style={styles.input}
         placeholder="검색어를 입력하세요"
         placeholderTextColor="#8292aa"
+        value={keyword}
+        onChangeText={setKeyword}
         autoFocus
       />
       <Pressable
-        style={({pressed}) => [styles.button, pressed && {opacity: 0.5}]}>
+        style={({pressed}) => [styles.button, pressed && {opacity: 0.5}]}
+        onPress={() => setKeyword('')}>
         <Icon name="cancel" size={24} color="#8292aa" />
       </Pressable>
     </View>

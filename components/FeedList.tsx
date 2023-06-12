@@ -45,7 +45,9 @@ const FeedList = ({logs, onScrolledToBottom}: IFeedListProps) => {
 };
 
 const styles = StyleSheet.create({
-  block: {flex: 1},
+  block: {
+    flex: 1,
+  },
   separator: {
     backgroundColor: '#e0e0e0',
     height: 1,

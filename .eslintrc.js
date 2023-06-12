@@ -34,6 +34,7 @@ module.exports = {
         '@typescript-eslint/no-duplicate-imports': 'warn',
         '@typescript-eslint/no-shadow': ['error'],
         '@typescript-eslint/no-empty-function': 'off',
+        // '@typescript-eslint/ban-types': 'off',
         'react-native/no-unused-styles': 'warn',
         'react-native/no-inline-styles': 'warn',
         'react-native/no-color-literals': 'off',
