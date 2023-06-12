@@ -11,6 +11,11 @@ export interface IUnSavedLog {
   body: string;
   date: string;
 }
+export const DefaultLog = {
+  title: '',
+  body: '',
+  date: '',
+};
 export interface ISavedLog extends IUnSavedLog {
   id: string;
 }
@@ -23,10 +28,15 @@ const DefaultLogs = Array.from({length: 10}, (_, idx) => ({
 interface ILogContext {
   logs: ISavedLog[];
   addLog: (log: IUnSavedLog) => void;
+  modifyLog: (modifiedLog: ISavedLog) => void;
+  removeLog: (id: string) => void;
 }
+
 const DefaultLogContext = {
   logs: [],
   addLog: () => {},
+  modifyLog: () => {},
+  removeLog: () => {},
 };
 
 const LogContext = createContext<ILogContext>(DefaultLogContext);
@@ -44,8 +54,22 @@ const LogProvider = ({children}: PropsWithChildren) => {
     setLogs(prevLogs => [...prevLogs, newLog]);
   };
 
+  const modifyLog = (modifiedLog: ISavedLog) => {
+    const modifiedLogs = logs.map(log =>
+      log.id === modifiedLog.id ? modifiedLog : log,
+    );
+    setLogs(modifiedLogs);
+  };
+
+  const removeLog = (id: string) => {
+    const removedLogs = logs.filter(log => log.id !== id);
+    setLogs(removedLogs);
+  };
+
   return (
-    <LogContext.Provider value={{logs, addLog}}>{children}</LogContext.Provider>
+    <LogContext.Provider value={{logs, addLog, modifyLog, removeLog}}>
+      {children}
+    </LogContext.Provider>
   );
 };
 const useLog = () => useContext(LogContext);

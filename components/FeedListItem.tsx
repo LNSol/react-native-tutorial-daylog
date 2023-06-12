@@ -2,6 +2,16 @@ import {Platform, Pressable, StyleSheet, Text} from 'react-native';
 import {format, formatDistanceToNow} from 'date-fns';
 import {ko} from 'date-fns/locale';
 import {ISavedLog} from '../contexts/LogContext';
+import {CompositeNavigationProp, useNavigation} from '@react-navigation/native';
+import {RootStackScreenParamList} from '../screens/RootStack';
+import {NativeStackNavigationProp} from '@react-navigation/native-stack';
+import {MainTabScreenParamList} from '../screens/MainTab';
+import {BottomTabNavigationProp} from '@react-navigation/bottom-tabs';
+
+type ComposedNavigation = CompositeNavigationProp<
+  BottomTabNavigationProp<MainTabScreenParamList, 'Feed'>,
+  NativeStackNavigationProp<RootStackScreenParamList>
+>;
 
 const truncate = (text: string) => {
   const replaced = text.replace(/\n/g, '');
@@ -25,7 +35,12 @@ const formatDate = (date: string) => {
 };
 
 const FeedListItem = ({log}: {log: ISavedLog}) => {
+  const navigation = useNavigation<ComposedNavigation>();
   const {title, body, date} = log;
+
+  const goToWriteScreen = () => {
+    navigation.navigate('Write', {log});
+  };
 
   return (
     <Pressable
@@ -33,7 +48,8 @@ const FeedListItem = ({log}: {log: ISavedLog}) => {
         styles.block,
         Platform.OS === 'ios' && pressed && {backgroundColor: '#f9f9f9'},
       ]}
-      android_ripple={{color: '#f5f5f5'}}>
+      android_ripple={{color: '#f5f5f5'}}
+      onPress={goToWriteScreen}>
       <Text style={styles.date}>{formatDate(date)}</Text>
       <Text style={styles.title}>{title}</Text>
       <Text style={styles.body}>{truncate(body)}</Text>

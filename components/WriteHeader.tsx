@@ -3,11 +3,13 @@ import TransparentCircleButton from './TransparentCircleButton';
 import {StyleSheet, View} from 'react-native';
 
 interface IWriteHeaderProps {
+  isEditing: boolean;
   save: () => void;
   goBack: () => void;
+  remove: () => void;
 }
 
-const WriteHeader = ({save, goBack}: IWriteHeaderProps) => {
+const WriteHeader = ({save, goBack, remove, isEditing}: IWriteHeaderProps) => {
   return (
     <View style={styles.block}>
       <TransparentCircleButton
@@ -16,11 +18,15 @@ const WriteHeader = ({save, goBack}: IWriteHeaderProps) => {
         onPress={goBack}
       />
       <View style={styles.buttons}>
-        <TransparentCircleButton
-          name="delete-forever"
-          color="#ef5350"
-          hasMarginRight
-        />
+        {isEditing && (
+          <TransparentCircleButton
+            name="delete-forever"
+            color="#ef5350"
+            hasMarginRight
+            onPress={remove}
+          />
+        )}
+
         <TransparentCircleButton name="check" color="#009688" onPress={save} />
       </View>
     </View>

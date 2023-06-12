@@ -13,13 +13,17 @@ type WriteScreenProps = NativeStackScreenProps<
   'Write'
 >;
 
-const WriteScreen = ({navigation}: WriteScreenProps) => {
-  const {addLog} = useLog();
-  const [title, setTitle] = useState('');
-  const [body, setBody] = useState('');
+const WriteScreen = ({route, navigation}: WriteScreenProps) => {
+  const {log} = route.params;
+  const {addLog, modifyLog, removeLog} = useLog();
+  const [title, setTitle] = useState(log.title);
+  const [body, setBody] = useState(log.body);
 
   const save = () => {
-    addLog({title, body, date: new Date().toString()});
+    'id' in log
+      ? modifyLog({id: log.id, date: log.date, title, body})
+      : addLog({title, body, date: new Date().toString()});
+
     navigation.pop();
   };
 
@@ -46,13 +50,37 @@ const WriteScreen = ({navigation}: WriteScreenProps) => {
     }
   };
 
+  const askRemove = () => {
+    if ('id' in log) {
+      Alert.alert('피드 삭제', '피드를 정말로 삭제하시겠습니까?', [
+        {
+          text: '취소',
+          style: 'cancel',
+        },
+        {
+          text: '삭제',
+          onPress: () => {
+            removeLog(log.id);
+            navigation.pop();
+          },
+          style: 'destructive',
+        },
+      ]);
+    }
+  };
+
   return (
     <ScreenWrapper>
       <KeyboardAvoidingView
         style={styles.avoidingView}
         behavior={Platform.select({ios: 'padding'})}>
         <SafeAreaView style={styles.block}>
-          <WriteHeader save={save} goBack={goBack} />
+          <WriteHeader
+            isEditing={'id' in log}
+            save={save}
+            goBack={goBack}
+            remove={askRemove}
+          />
           <WriteEditor
             title={title}
             body={body}

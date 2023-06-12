@@ -1,17 +1,26 @@
-import {useNavigation} from '@react-navigation/native';
+import {CompositeNavigationProp, useNavigation} from '@react-navigation/native';
 import {NativeStackNavigationProp} from '@react-navigation/native-stack';
 import React, {useEffect, useRef} from 'react';
 import {Animated, Platform, Pressable, StyleSheet} from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import {RootStackScreenParamList} from '../screens/RootStack';
+import {BottomTabNavigationProp} from '@react-navigation/bottom-tabs';
+import {MainTabScreenParamList} from '../screens/MainTab';
+import {DefaultLog} from '../contexts/LogContext';
+
+type FloatingWriteButtonProps = CompositeNavigationProp<
+  BottomTabNavigationProp<MainTabScreenParamList>,
+  NativeStackNavigationProp<RootStackScreenParamList>
+>;
 
 const FloatingWriteButton = ({hidden}: {hidden: boolean}) => {
-  const navigation =
-    useNavigation<NativeStackNavigationProp<RootStackScreenParamList>>();
+  const navigation = useNavigation<FloatingWriteButtonProps>();
   const animation = useRef(new Animated.Value(0)).current;
 
   const goToWriteScreen = () => {
-    navigation.navigate('Write');
+    navigation.navigate('Write', {
+      log: DefaultLog,
+    });
   };
 
   useEffect(() => {
