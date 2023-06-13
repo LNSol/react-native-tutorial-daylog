@@ -7,15 +7,21 @@ import {
 } from 'react-native';
 import {ISavedLog} from '../contexts/LogContext';
 import FeedListItem from './FeedListItem';
+import {ReactElement} from 'react';
 
 interface IFeedListProps {
   logs: ISavedLog[];
   onScrolledToBottom?: (isBottom: boolean) => void;
+  ListHeaderComponent?: ReactElement;
 }
 
 const ItemSeparator = () => <View style={styles.separator} />;
 
-const FeedList = ({logs, onScrolledToBottom}: IFeedListProps) => {
+const FeedList = ({
+  logs,
+  onScrolledToBottom,
+  ListHeaderComponent,
+}: IFeedListProps) => {
   const onScroll = (e: NativeSyntheticEvent<NativeScrollEvent>) => {
     const {
       contentSize: {height: cHeight},
@@ -40,6 +46,7 @@ const FeedList = ({logs, onScrolledToBottom}: IFeedListProps) => {
       keyExtractor={log => log.id?.toString()}
       ItemSeparatorComponent={ItemSeparator}
       onScroll={onScroll}
+      ListHeaderComponent={ListHeaderComponent}
     />
   );
 };
