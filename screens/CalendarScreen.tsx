@@ -1,11 +1,11 @@
+import {useState} from 'react';
+import {format} from 'date-fns';
 import {useLog} from '../contexts/LogContext';
 import CalendarView from '../components/CalendarView';
-import {format} from 'date-fns';
-import {useState} from 'react';
 import FeedList from '../components/FeedList';
 
 export interface IMarkedDates {
-  [key: string]: {marked: boolean};
+  [date: string]: {marked: boolean};
 }
 
 const CalendarScreen = () => {
@@ -24,8 +24,6 @@ const CalendarScreen = () => {
     return acc;
   }, {});
 
-  console.log(markedDates);
-
   return (
     <FeedList
       logs={filteredLogs}
@@ -37,11 +35,6 @@ const CalendarScreen = () => {
         />
       }
     />
-    // <CalendarView
-    //   selectedDate={selectedDate}
-    //   markedDates={markedDates}
-    //   onSelectDate={setSelectedDate}
-    // />
   );
 };
 
