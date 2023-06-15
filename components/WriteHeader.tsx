@@ -1,4 +1,4 @@
-import React, {Dispatch, SetStateAction, useState} from 'react';
+import React, {Dispatch, SetStateAction, useEffect, useReducer} from 'react';
 import {Pressable, StyleSheet, Text, View} from 'react-native';
 import {format} from 'date-fns';
 import {ko} from 'date-fns/locale';
@@ -14,6 +14,26 @@ interface IWriteHeaderProps {
   setDate: Dispatch<SetStateAction<Date>>;
 }
 
+interface IState {
+  mode: 'date' | 'time' | undefined;
+  visible: boolean;
+}
+
+type Action =
+  | {type: 'OPEN'; payload: {mode: 'date' | 'time'}}
+  | {type: 'CLOSE'};
+
+const reducer = (state: IState, action: Action) => {
+  switch (action.type) {
+    case 'OPEN':
+      return {mode: action.payload.mode, visible: true};
+    case 'CLOSE':
+      return {mode: undefined, visible: false};
+    default:
+      throw new Error('Unhandled');
+  }
+};
+
 const WriteHeader = ({
   save,
   goBack,
@@ -22,18 +42,24 @@ const WriteHeader = ({
   date,
   setDate,
 }: IWriteHeaderProps) => {
-  const [mode, setMode] = useState<'date' | 'time'>('date');
-  const [visible, setVisible] = useState(false);
+  const [datetimeState, dispatch] = useReducer(reducer, {
+    mode: undefined,
+    visible: false,
+  });
 
-  const selectDateTime = (selectedDate: Date) => {
+  const open = (selectedMode: 'date' | 'time') =>
+    dispatch({type: 'OPEN', payload: {mode: selectedMode}});
+
+  const close = () => dispatch({type: 'CLOSE'});
+
+  const changeDate = (selectedDate: Date) => {
+    dispatch({type: 'CLOSE'});
     setDate(selectedDate);
-    setVisible(false);
   };
 
-  const openSelectDateModal = (selectedMode: 'date' | 'time') => {
-    setMode(selectedMode);
-    setVisible(true);
-  };
+  useEffect(() => {
+    console.log(datetimeState.visible);
+  }, [datetimeState.visible]);
 
   return (
     <View style={styles.block}>
@@ -43,11 +69,11 @@ const WriteHeader = ({
         onPress={goBack}
       />
       <View style={styles.datetime}>
-        <Pressable onPress={() => openSelectDateModal('date')}>
+        <Pressable onPress={() => open('date')}>
           <Text>{format(date, 'PPP', {locale: ko})}</Text>
         </Pressable>
         <View style={styles.separator} />
-        <Pressable onPress={() => openSelectDateModal('time')}>
+        <Pressable onPress={() => open('time')}>
           <Text>{format(date, 'p', {locale: ko})}</Text>
         </Pressable>
       </View>
@@ -64,10 +90,10 @@ const WriteHeader = ({
       </View>
       <DateTimePicker
         date={date}
-        mode={mode}
-        onConfirm={selectDateTime}
-        onCancel={() => setVisible(false)}
-        isVisible={visible}
+        mode={datetimeState.mode}
+        onConfirm={changeDate}
+        onCancel={close}
+        isVisible={datetimeState.visible}
       />
     </View>
   );
@@ -80,7 +106,6 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    borderWidth: 1,
   },
   buttons: {
     flexDirection: 'row',
@@ -93,7 +118,6 @@ const styles = StyleSheet.create({
     right: 0,
     bottom: 0,
     left: 0,
-    borderWidth: 1,
     alignItems: 'center',
     justifyContent: 'center',
     zIndex: -1,
