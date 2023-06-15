@@ -16,13 +16,18 @@ type WriteScreenProps = NativeStackScreenProps<
 const WriteScreen = ({route, navigation}: WriteScreenProps) => {
   const {log} = route.params;
   const {addLog, modifyLog, removeLog} = useLog();
+  const [date, setDate] = useState(
+    'id' in log && log.id ? new Date(log.date) : new Date(),
+  );
   const [title, setTitle] = useState(log.title);
   const [body, setBody] = useState(log.body);
 
   const save = () => {
+    const dateStr = date.toString();
+
     'id' in log
-      ? modifyLog({id: log.id, date: log.date, title, body})
-      : addLog({title, body, date: new Date().toString()});
+      ? modifyLog({id: log.id, date: dateStr, title, body})
+      : addLog({title, body, date: dateStr});
 
     navigation.pop();
   };
@@ -77,6 +82,8 @@ const WriteScreen = ({route, navigation}: WriteScreenProps) => {
           save={save}
           goBack={goBack}
           remove={askRemove}
+          date={date}
+          setDate={setDate}
         />
         <WriteEditor
           title={title}
